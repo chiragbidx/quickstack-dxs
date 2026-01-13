@@ -1,11 +1,18 @@
 "use server";
 
+// Stub functions; implement real password/account logic here
+
 export async function updatePassword(formData: FormData) {
-  // Stub: Add actual logic here
-  return { success: "Password updated successfully (stub)" };
+  // Your password change logic here
+  return { success: "Password updated (stub)" };
 }
 
 export async function deleteAccount(formData: FormData) {
-  // Stub: Add actual logic here
-  return { success: "Account deleted successfully (stub)" };
+  // Your account deletion logic here
+  return { success: "Account deleted (stub)" };
+}
+
+export async function updateAccount(formData: FormData) {
+  // Handle account update (e.g., name/email change)
+  return { success: "Account updated (stub)" };
 }
