@@ -6,7 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Lock, Trash2, Loader2 } from 'lucide-react';
 import { useActionState } from 'react';
-import { updatePassword, deleteAccount } from '@/app/(auth)/actions'; // Updated import
+import { updatePassword, deleteAccount } from '@/app/(auth)/actions';
 
 type PasswordState = {
   currentPassword?: string;
@@ -22,16 +22,36 @@ type DeleteState = {
   success?: string;
 };
 
+// Wrap updatePassword for useActionState
+async function updatePasswordAction(state: PasswordState, formData: FormData): Promise<PasswordState> {
+  try {
+    const result = await updatePassword(formData);
+    return { ...state, ...result, error: undefined };
+  } catch (err: any) {
+    return { ...state, error: err?.message || 'Failed to update password' };
+  }
+}
+
+// Wrap deleteAccount for useActionState
+async function deleteAccountAction(state: DeleteState, formData: FormData): Promise<DeleteState> {
+  try {
+    const result = await deleteAccount(formData);
+    return { ...state, ...result, error: undefined };
+  } catch (err: any) {
+    return { ...state, error: err?.message || 'Failed to delete account' };
+  }
+}
+
 export default function SecurityPage() {
   const [passwordState, passwordAction, isPasswordPending] = useActionState<
     PasswordState,
     FormData
-  >(updatePassword, {});
+  >(updatePasswordAction, {});
 
   const [deleteState, deleteAction, isDeletePending] = useActionState<
     DeleteState,
     FormData
-  >(deleteAccount, {});
+  >(deleteAccountAction, {});
 
   return (
     <section className="flex-1 p-4 lg:p-8">
