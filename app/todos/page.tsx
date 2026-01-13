@@ -47,7 +47,7 @@ export default function TodosPage() {
   }
 
   return (
-    <main className="flex flex-col items-center min-h-screen bg-gray-50">
+    <main className="flex flex-col items-center min-h-screen bg-gray-100">
       <div className="w-full max-w-2xl mt-16 p-8 bg-white shadow rounded-lg">
         <h1 className="text-3xl font-bold mb-5">Your To Dos</h1>
         <TodoList
