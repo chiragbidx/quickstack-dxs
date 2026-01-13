@@ -7,7 +7,7 @@ export const metadata = {
 
 export default function HomePage() {
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center py-24 px-4">
+    <main className="flex min-h-screen flex-col items-center justify-center py-24 px-4 bg-gray-100">
       <div className="max-w-lg mx-auto text-center">
         <h1 className="text-4xl font-bold mb-4">SaaS To Do List</h1>
         <p className="text-lg text-gray-600 mb-8">
