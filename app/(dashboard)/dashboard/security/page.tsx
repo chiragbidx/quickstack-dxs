@@ -6,8 +6,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Lock, Trash2, Loader2 } from 'lucide-react';
 import { useActionState } from 'react';
-// Fixed import location for updatePassword and deleteAccount
-import { updatePassword, deleteAccount } from '@/app/(auth)/actions';
+import { updatePassword, deleteAccount } from '@/app/(auth)/actions'; // Updated import
 
 type PasswordState = {
   currentPassword?: string;
