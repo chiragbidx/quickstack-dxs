@@ -11,12 +11,18 @@ import { validatedActionWithUser, ActionState } from '@/lib/auth/middleware';
 
 // Stub functions; implement real password/account logic here
 
-export async function updatePassword(formData: FormData) {
+export async function updatePassword(
+  prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   // Your password change logic here
   return { success: "Password updated (stub)" };
 }
 
-export async function deleteAccount(formData: FormData) {
+export async function deleteAccount(
+  prevState: ActionState,
+  formData: FormData
+): Promise<ActionState> {
   // Your account deletion logic here
   return { success: "Account deleted (stub)" };
 }
