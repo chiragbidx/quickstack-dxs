@@ -95,10 +95,21 @@ function TeamMembersSkeleton() {
 
 function TeamMembers() {
   const { data: teamData } = useSWR<TeamDataWithMembers>('/api/team', fetcher);
+
+  // Wrap removeTeamMember to match (state, formData) => ActionState signature
+  async function removeTeamMemberAction(state: ActionState, formData: FormData): Promise<ActionState> {
+    try {
+      const result = await removeTeamMember(formData);
+      return { ...state, ...result, error: undefined };
+    } catch (err: any) {
+      return { ...state, error: err?.message || 'Failed to remove team member' };
+    }
+  }
+
   const [removeState, removeAction, isRemovePending] = useActionState<
     ActionState,
     FormData
-  >(removeTeamMember, {});
+  >(removeTeamMemberAction, {});
 
   const getUserDisplayName = (user: Pick<User, 'id' | 'name' | 'email'>) => {
     return user.name || user.email || 'Unknown User';
@@ -190,10 +201,21 @@ function InviteTeamMemberSkeleton() {
 function InviteTeamMember() {
   const { data: user } = useSWR<User>('/api/user', fetcher);
   const isOwner = user?.role === 'owner';
+  
+  // Wrap inviteTeamMember if needed for useActionState
+  async function inviteTeamMemberAction(state: ActionState, formData: FormData): Promise<ActionState> {
+    try {
+      const result = await inviteTeamMember(formData);
+      return { ...state, ...result, error: undefined };
+    } catch (err: any) {
+      return { ...state, error: err?.message || 'Failed to invite team member' };
+    }
+  }
+
   const [inviteState, inviteAction, isInvitePending] = useActionState<
     ActionState,
     FormData
-  >(inviteTeamMember, {});
+  >(inviteTeamMemberAction, {});
 
   return (
     <Card>
