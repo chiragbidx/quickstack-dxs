@@ -6,7 +6,8 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Lock, Trash2, Loader2 } from 'lucide-react';
 import { useActionState } from 'react';
-import { updatePassword, deleteAccount } from '@/app/(login)/actions';
+// Fixed import location for updatePassword and deleteAccount
+import { updatePassword, deleteAccount } from '@/app/(auth)/actions';
 
 type PasswordState = {
   currentPassword?: string;
@@ -35,7 +36,7 @@ export default function SecurityPage() {
 
   return (
     <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium bold text-gray-900 mb-6">
+      <h1 className="text-lg lg:text-2xl font-medium bold mb-6">
         Security Settings
       </h1>
       <Card className="mb-8">
