@@ -72,15 +72,25 @@ function AccountFormWithData({ state }: { state: ActionState }) {
   );
 }
 
+// Wrap the server action to match useActionState expected signature
+async function updateAccountAction(state: ActionState, formData: FormData): Promise<ActionState> {
+  try {
+    const result = await updateAccount(formData);
+    return { ...state, ...result, error: undefined }; // Set error to undefined on success
+  } catch (err: any) {
+    return { ...state, error: err?.message || 'Failed to update account' };
+  }
+}
+
 export default function GeneralPage() {
   const [state, formAction, isPending] = useActionState<ActionState, FormData>(
-    updateAccount,
+    updateAccountAction,
     {}
   );
 
   return (
     <section className="flex-1 p-4 lg:p-8">
-      <h1 className="text-lg lg:text-2xl font-medium text-gray-900 mb-6">
+      <h1 className="text-lg lg:text-2xl font-medium mb-6">
         General Settings
       </h1>
 
