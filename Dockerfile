@@ -10,4 +10,4 @@ RUN corepack enable \
 
 EXPOSE 8080
 
-CMD ["pnpm", "dev"]
+CMD ["node", "scripts/dev-supervisor.js"]
