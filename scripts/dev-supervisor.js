@@ -22,37 +22,27 @@ function run(name, cmd, args) {
 
 console.log("[supervisor] ensuring git repo");
 
-// Ensure .git exists (Railway strips it at build time)
 if (!fs.existsSync(".git")) {
   if (!REPO_URL) {
     console.error("[supervisor] REPO_URL missing");
     process.exit(1);
   }
 
-  console.log("[supervisor] initializing git in-place");
-
   execSync("git init", { stdio: "inherit" });
   execSync(`git remote add origin ${REPO_URL}`, { stdio: "inherit" });
   execSync("git fetch origin --depth=1", { stdio: "inherit" });
-
-  // Force working tree to exactly match origin
   execSync(`git reset --hard origin/${BRANCH}`, { stdio: "inherit" });
   execSync("git clean -fd", { stdio: "inherit" });
 }
 
 console.log("[supervisor] starting Next.js dev server");
 
-// IMPORTANT:
-// - use pnpm so binaries resolve
-// - use `--` so args reach next
-// - bind to 0.0.0.0
-// - listen on Railway PORT
+// 🔑 CALL NEXT DIRECTLY (NO pnpm, NO `--`)
 run(
   "next-dev",
-  "pnpm",
+  "./node_modules/.bin/next",
   [
     "dev",
-    "--",
     "--turbopack",
     "-H",
     "0.0.0.0",
