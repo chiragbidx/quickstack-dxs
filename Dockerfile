@@ -7,9 +7,9 @@ RUN corepack enable \
   && apt-get install -y git \
   && rm -rf /var/lib/apt/lists/*
 
-# Copy ONLY bootstrap code (not app code)
-COPY bootstrap ./bootstrap
+# Copy the repo (including .git if not ignored)
+COPY . .
 
 EXPOSE 8080
 
-CMD ["node", "bootstrap/dev-supervisor.js"]
+CMD ["node", "scripts/dev-supervisor.js"]
