@@ -7,10 +7,10 @@ RUN corepack enable \
   && apt-get install -y git \
   && rm -rf /var/lib/apt/lists/*
 
-# Copy repo
+# Copy app source (no .git expected)
 COPY . .
 
-# Install dependencies
+# Install deps
 RUN pnpm install
 
 EXPOSE 8080
