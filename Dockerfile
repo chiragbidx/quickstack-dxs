@@ -2,20 +2,12 @@ FROM node:20
 
 WORKDIR /app
 
-# Enable pnpm
-RUN corepack enable
+# Enable pnpm + install git
+RUN corepack enable \
+  && apt-get update \
+  && apt-get install -y git \
+  && rm -rf /var/lib/apt/lists/*
 
-# Copy only lockfiles first (better caching)
-COPY package.json pnpm-lock.yaml* ./
+EXPOSE 8080
 
-# Install dependencies
-RUN pnpm install
-
-# Copy the rest of the app
-COPY . .
-
-# Expose Next.js dev port
-EXPOSE 3000
-
-# Start Next.js dev server
 CMD ["pnpm", "dev"]
