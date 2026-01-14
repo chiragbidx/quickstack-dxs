@@ -18,17 +18,26 @@ function run(name, cmd, args) {
 
 console.log("[supervisor] ensuring git repo");
 
-// 🔴 THIS IS THE KEY FIX
+// ✅ CORRECT FIX
 if (!fs.existsSync(".git")) {
   if (!process.env.REPO_URL) {
-    console.error("[supervisor] REPO_URL missing, cannot clone");
+    console.error("[supervisor] REPO_URL missing");
     process.exit(1);
   }
 
-  console.log("[supervisor] cloning git repo...");
-  execSync(`git clone ${process.env.REPO_URL} .`, {
+  console.log("[supervisor] initializing git repo");
+
+  execSync("git init", { stdio: "inherit" });
+  execSync(`git remote add origin ${process.env.REPO_URL}`, {
     stdio: "inherit",
   });
+  execSync("git fetch origin", { stdio: "inherit" });
+  execSync(
+    `git checkout -B ${process.env.PREVIEW_BRANCH || "main"} origin/${
+      process.env.PREVIEW_BRANCH || "main"
+    }`,
+    { stdio: "inherit" }
+  );
 }
 
 console.log("[supervisor] starting dev runtime");
