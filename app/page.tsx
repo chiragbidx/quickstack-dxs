@@ -9,7 +9,7 @@ export default function HomePage() {
   return (
     <main className="flex min-h-screen flex-col items-center justify-center py-24 px-4">
       <div className="max-w-lg mx-auto text-center">
-        <h1 className="text-4xl font-bold mb-4">SaaS To Do List - Example</h1>
+        <h1 className="text-4xl font-bold mb-4">SaaS To Do List - Example 2</h1>
         <p className="text-lg text-gray-600 mb-8">
           Simple, powerful, and team-ready To Do list SaaS. Organize your work, collaborate, and accomplish more — fast.
         </p>
