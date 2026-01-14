@@ -1,4 +1,5 @@
-import { spawn } from "child_process";
+import { spawn, execSync } from "child_process";
+import fs from "fs";
 
 function run(name, cmd, args) {
   const p = spawn(cmd, args, {
@@ -15,16 +16,22 @@ function run(name, cmd, args) {
   return p;
 }
 
+console.log("[supervisor] ensuring git repo");
+
+// 🔴 THIS IS THE KEY FIX
+if (!fs.existsSync(".git")) {
+  if (!process.env.REPO_URL) {
+    console.error("[supervisor] REPO_URL missing, cannot clone");
+    process.exit(1);
+  }
+
+  console.log("[supervisor] cloning git repo...");
+  execSync(`git clone ${process.env.REPO_URL} .`, {
+    stdio: "inherit",
+  });
+}
+
 console.log("[supervisor] starting dev runtime");
 
-run(
-  "next-dev",
-  "next",
-  ["dev", "--turbopack", "-H", "0.0.0.0", "-p", process.env.PORT || "8080"]
-);
-
-run(
-  "git-poll",
-  "node",
-  ["scripts/git-poll.js"]
-);
+run("next-dev", "pnpm", ["dev"]);
+run("git-poll", "node", ["scripts/git-poll.js"]);
