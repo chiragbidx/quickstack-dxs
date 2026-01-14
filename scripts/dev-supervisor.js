@@ -1,30 +1,28 @@
 import { spawn } from "child_process";
 
-function run(name, cmd, args) {
-  const p = spawn(cmd, args, {
+function run(cmd, args) {
+  return spawn(cmd, args, {
     stdio: "inherit",
     shell: true,
     env: process.env,
   });
-
-  p.on("exit", (code) => {
-    console.error(`[supervisor] ${name} exited with code ${code}`);
-    process.exit(code ?? 1);
-  });
-
-  return p;
 }
 
-console.log("[supervisor] starting dev runtime");
+console.log("[supervisor] bootstrapping repo");
 
-run(
-  "next-dev",
-  "next",
-  ["dev", "--turbopack", "-H", "0.0.0.0", "-p", process.env.PORT || "3000"]
-);
+run("node", ["scripts/runtime-bootstrap.js"]).on("exit", (code) => {
+  if (code !== 0) process.exit(1);
 
-run(
-  "git-poll",
-  "node",
-  ["scripts/git-poll.js"]
-);
+  console.log("[supervisor] starting dev runtime");
+
+  run("next", [
+    "dev",
+    "--turbopack",
+    "-H",
+    "0.0.0.0",
+    "-p",
+    process.env.PORT || "8080",
+  ]);
+
+  run("node", ["scripts/git-poll.js"]);
+});
